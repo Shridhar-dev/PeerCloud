@@ -1,18 +1,39 @@
 import { execSync, spawn } from 'node:child_process';
 import { appendFileSync, writeFileSync } from 'node:fs';
+import { python, nodejs } from './templates/templates.js';
+import path from 'node:path';
+import fs from 'node:fs';
 
-export async function runDockerJob(jobId, env) {
+export async function runDockerJob(jobId, repository, type, entrypoint) {
+  const repoName = repository.split('/').pop().replace('.git', '');
+  const clonePath = `./repos/${repoName}`;
   const containerName = `container-${jobId}`;
   const networkName = 'peercloud-net';
-  const buildContext = './repos/node-server';
 
-  try {
-    execSync(`docker network inspect ${networkName}`, { stdio: 'ignore' });
-  } catch {
-    execSync(`docker network create ${networkName}`, { stdio: 'inherit' });
+  if (!fs.existsSync(clonePath)) {
+    execSync(`git clone ${repository} ${clonePath}`, { stdio: 'inherit' });
   }
 
-  const dockerBuildCmd = `docker build -t ${containerName} ${buildContext}`;
+  if(!fs.existsSync(`${clonePath}/Dockerfile`)) {
+    let dockerfileContent;
+    if (type === 'python') {
+      dockerfileContent = python.replace(/CMD\s+\[.*\]/, `CMD ["python", "${entrypoint}"]`);
+    } else if (type === 'nodejs') {
+      dockerfileContent = nodejs.replace(/CMD\s+\[.*\]/, `CMD ["node", "${entrypoint}"]`);
+    } else {
+      throw new Error("Unsupported type: Only 'python' and 'nodejs' are supported.");
+    }
+    
+    fs.writeFileSync(path.join(clonePath, 'Dockerfile'), dockerfileContent);
+    
+    try {
+      execSync(`docker network inspect ${networkName}`, { stdio: 'ignore' });
+    } catch {
+      execSync(`docker network create ${networkName}`, { stdio: 'inherit' });
+    }
+  }
+
+  const dockerBuildCmd = `docker build -t ${containerName} ${clonePath}`;
   execSync(dockerBuildCmd, { stdio: 'inherit' });
 
   const run = spawn("docker", [
@@ -26,7 +47,7 @@ export async function runDockerJob(jobId, env) {
     "run", "--rm",
     "--network", networkName,
     "-p", "4040:4040",
-    "-e", `NGROK_AUTHTOKEN=${process.env.NGROK_AUTH_TOKEN || '2mzQ2xid9r3q9cvyrkUjx8B8XEu_6f5LpGx789AytMgSPQnkc'}`,
+    "-e", `NGROK_AUTHTOKEN=${process.env.NGROK_AUTH_TOKEN}`,
     "ngrok/ngrok:latest",
     "http", `${containerName}:3000`
   ]);
@@ -53,11 +74,11 @@ export async function runDockerJob(jobId, env) {
     console.error("❌ Failed to get Ngrok URL:", err.message);
   }
 
-  writeFileSync(`${buildContext}/ngrok.txt`, '**NGROK LOGS**\n', 'utf8');
+  writeFileSync(`${clonePath}/ngrok.txt`, '**NGROK LOGS**\n', 'utf8');
   ngrok.stdout.on("data", (data) => {
     const msg = data.toString();
     console.log(`[ngrok] ${msg}`);
-    appendFileSync(`${buildContext}/ngrok.txt`, msg, 'utf8');
+    appendFileSync(`${clonePath}/ngrok.txt`, msg, 'utf8');
     const match = msg.match(/url=(https:\/\/[^\s]+)/);
     if (match) {
       console.log("🔗 Ngrok public URL:", match[1]);
@@ -69,21 +90,21 @@ export async function runDockerJob(jobId, env) {
   });
 
   let logs = "";
-  writeFileSync(`${buildContext}/logs.txt`, '**LOGS**\n', 'utf8');
+  writeFileSync(`${clonePath}/logs.txt`, '**LOGS**\n', 'utf8');
   run.stdout.on("data", (data) => {
     const log = data.toString();
     logs += log;
-    appendFileSync(`${buildContext}/logs.txt`, log, 'utf8');
+    appendFileSync(`${clonePath}/logs.txt`, log, 'utf8');
   });
 
   run.stderr.on("data", (data) => {
     const log = data.toString();
     logs += log;
-    appendFileSync(`${buildContext}/logs.txt`, log, 'utf8');
+    appendFileSync(`${clonePath}/logs.txt`, log, 'utf8');
   });
 
   run.on("close", () => {
-    writeFileSync(`${buildContext}/logs.txt`, logs, 'utf8');
+    writeFileSync(`${clonePath}/logs.txt`, logs, 'utf8');
     try {
       ngrok.kill('SIGINT');
     } catch (err) {

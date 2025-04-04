@@ -1,4 +1,4 @@
-const nodejs = 
+export const nodejs = 
 `
 # Use an official lightweight Node.js image
 FROM node:20-slim
@@ -25,7 +25,7 @@ EXPOSE 3000
 CMD ["node", "index.js"]
 `
 
-const python = 
+export const python = 
 `
 FROM python:3.10
 
