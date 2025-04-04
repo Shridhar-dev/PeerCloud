@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Upload Python Job</title>
+</head>
+<body>
+  <h2>Upload Python File to Train</h2>
+  <form action="/upload" method="post" enctype="multipart/form-data">
+    <input type="file" name="file" accept=".py" required>
+    <button type="submit">Send to GPU Host</button>
+  </form>
+</body>
+</html>
