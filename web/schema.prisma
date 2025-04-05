@@ -19,4 +19,5 @@ model Ngrok{
   url         String
   userId      Int
   user        User    @relation(fields: [userId], references: [id])
+  isAvailable Boolean
 }
