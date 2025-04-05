@@ -42,7 +42,7 @@ export const MainPage = ({user}) =>  {
             </p>
             <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
           <Link
-            to="/dashboard"
+            to="/hosts"
             className="py-3 px-8 shadow-md text-white bg-black flex justify-center items-center gap-2 rounded-lg group relative overflow-hidden transition-all before:absolute before:h-0 before:w-0 before:rounded-full before:bg-white before:duration-300 before:ease-out hover:before:h-32 hover:before:w-72"
           >
             <span className="z-10 group-hover:text-black">Get Started</span>

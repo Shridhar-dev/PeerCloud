@@ -36,3 +36,35 @@ page DashboardPage {
   component: import { DashboardPage } from "@src/DashboardPage",
   authRequired: true
 }
+
+route HostsRoute { path: "/hosts", to: HostsPage }
+page HostsPage {
+  component: import { HostsPage } from "@src/HostPage",
+  authRequired: true
+}
+
+route ClientsRoute { path: "/clients", to: ClientsPage }
+page ClientsPage {
+  component: import { ClientsPage } from "@src/ClientsPage",
+  authRequired: true
+}
+
+crud Container{
+  entity: Container,
+  operations: {
+    getAll: {},
+    create: {
+      overrideFn: import { createContainer } from "@src/container.js",
+    },
+  },
+}
+
+crud Ngrok{
+  entity: Ngrok,
+  operations: {
+    getAll: {},
+    create: {
+      overrideFn: import { createNgrok } from "@src/ngrok.js",
+    },
+  },
+}

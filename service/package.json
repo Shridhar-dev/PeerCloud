@@ -7,13 +7,14 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "type":"module",
+  "type": "module",
   "author": "",
   "license": "ISC",
-  "bin":"bundle.js",
+  "bin": "bundle.js",
   "dependencies": {
     "express": "^5.1.0",
     "get-port": "^7.1.0",
-    "localtunnel": "^2.0.2"
+    "localtunnel": "^2.0.2",
+    "ngrok": "^5.0.0-beta.2"
   }
 }

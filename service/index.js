@@ -1,6 +1,7 @@
 import express from "express";
 import { runDockerJob } from "./dockerrunner.js";
 import { getDockerStats } from "./stats.js";
+import ngrok from "ngrok";
 
 const app = express();
 app.use(express.json());
@@ -61,7 +62,14 @@ app.post("/stop/:id", async (req, res) => {
   }
 });
 
-// Start the server
-app.listen(port, () => {
+// Start the server and ngrok tunnel
+app.listen(port, async () => {
   console.log(`Docker Job API running on http://localhost:${port}`);
+
+  try {
+    const url = await ngrok.connect(port);
+    console.log(`ngrok tunnel established at ${url}`);
+  } catch (error) {
+    console.error("Error starting ngrok tunnel:", error);
+  }
 });
