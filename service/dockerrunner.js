@@ -11,7 +11,7 @@ export async function runDockerJob(jobId, repository, type, entrypoint) {
   //const clonePath = `/repos/${repoName}-${jobId}`;
   const containerName = `container-${jobId}`;
   const networkName = `peercloud-net-${jobId}`;
-
+  console.log(clonePath, fs.existsSync(clonePath))
   if (!fs.existsSync(clonePath)) {
     execSync(`git clone ${repository} ${clonePath}`, { stdio: 'inherit' });
   }

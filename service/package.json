@@ -7,10 +7,16 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "type": "module",
   "author": "",
   "license": "ISC",
   "bin": "bundle.js",
+  
+  "pkg": {
+    "assets": [
+      "node_modules/ngrok/bin/ngrok.exe",
+      "node_modules/cors/**/*"
+    ]
+  },
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^5.1.0",
