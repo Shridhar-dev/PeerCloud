@@ -7,11 +7,19 @@ import { Label } from "./components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./components/ui/select"
 import { Link } from "react-router-dom"
 import { Ngrok } from "wasp/client/crud"
-// import { redirect } from "@/.wasp/out/sdk/wasp/dist/server/utils"
+
+import { useState } from "react"
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "./components/ui/dialog"
+import { Copy } from "lucide-react"
+import { toast } from "sonner"
+
 
 
 
 export const ClientsPage = () => {
+  const [showModal, setShowModal] = useState(false);
+const [serverUrl, setServerUrl] = useState("");
+
   const { data } = Ngrok.getAll.useQuery()
 
   async function submitRequest(e) {
@@ -34,15 +42,47 @@ export const ClientsPage = () => {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          repository: "https://github.com/Rushikesh-24/node-server",
+          repository: repoLink||"https://github.com/Rushikesh-24/node-server",
           type,
           entrypoint
         })
       })
-      console.log(info)
+      const info2 = await info.json()
+      console.log(info2.url)
+      setServerUrl(info2.url);
+setShowModal(true);
+      // const newdata = 
     }
     details();
   }
+  const fetchGeminiData = async (requestBody) => {
+    try {
+      const geminiApiKey = process.env.NEXT_PUBLIC_GEMINI_API || "";
+      const response = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${geminiApiKey}`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(requestBody),
+        }
+      );
+
+      const result = await response.json();
+      // console.log("Result from Gemini:", result);
+
+      // Extract and clean response text
+      let responseText = result.candidates[0].content.parts[0].text;
+      responseText = responseText
+        .replace(/^```json\s*/, "")
+        .replace(/```\s*$/, "");
+
+      return JSON.parse(responseText);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      return null;
+    }
+  };
+
   return (
     <div className="w-full h-screen flex justify-center items-center">
 
@@ -102,6 +142,42 @@ export const ClientsPage = () => {
         </form>
       </Card>
     </div>
+    <Dialog open={showModal} onOpenChange={setShowModal}>
+  <DialogContent>
+    <DialogHeader>
+      <DialogTitle>Server Deployed Successfully</DialogTitle>
+    </DialogHeader>
+    <div className="space-y-4">
+      <div className="flex justify-between items-center bg-muted px-3 py-2 rounded-md">
+        <code className="text-sm">{serverUrl}</code>
+        <Button
+          size="sm"
+          variant="ghost"
+          onClick={() => {
+            navigator.clipboard.writeText(serverUrl);
+            toast.success("URL copied!");
+          }}
+        >
+          <Copy className="w-4 h-4" />
+        </Button>
+      </div>
+
+      <div className="text-sm space-y-1">
+        <p><strong>Available Endpoints:</strong></p>
+        <ul className="ml-4 list-disc">
+          <li><code>POST {serverUrl}/train</code> – Train a model</li>
+          <li><code>GET {serverUrl}/checkbuild</code> – Check build status</li>
+          <li>
+            <code>POST {serverUrl}/predict</code> – Predict using model <br />
+            <span className="text-muted-foreground ml-4 block">
+              Body: {"{ input: [0.1, 0.5, 0.3, ..., 1.0] /* 10 digits between 0-1 */ }"}
+            </span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </DialogContent>
+</Dialog>
     </div>
   )
 }

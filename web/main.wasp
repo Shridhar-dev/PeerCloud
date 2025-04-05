@@ -49,15 +49,6 @@ page ClientsPage {
   authRequired: true
 }
 
-crud Container{
-  entity: Container,
-  operations: {
-    getAll: {},
-    create: {
-      overrideFn: import { createContainer } from "@src/container.js",
-    },
-  },
-}
 
 crud Ngrok{
   entity: Ngrok,

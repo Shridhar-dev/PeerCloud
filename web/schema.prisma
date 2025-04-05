@@ -11,18 +11,7 @@ generator client {
 
 model User {
   id          Int @id @default(autoincrement())
-  containers  Container[] 
   ngrok      Ngrok[]
-}
-model Container {
-  id          Int @id @default(autoincrement())
-  containerName String
-  url         String
-  repoLink    String
-  type        String
-  entrypoint  String
-  userId      Int
-  user        User    @relation(fields: [userId], references: [id])
 }
 
 model Ngrok{
