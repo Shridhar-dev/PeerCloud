@@ -44,7 +44,7 @@ export const MainPage = ({user}) =>  {
             to="/hosts"
             className="py-3 px-8 shadow-md text-white bg-black flex justify-center items-center gap-2 rounded-lg group relative overflow-hidden transition-all before:absolute before:h-0 before:w-0 before:rounded-full before:bg-white before:duration-300 before:ease-out hover:before:h-32 hover:before:w-72"
           >
-            <span className="z-10 group-hover:text-black">Get Started</span>
+            <span className="z-10 group-hover:text-black">Host my device</span>
           </Link>
           <Link
             to="#how-it-works"

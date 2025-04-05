@@ -24,15 +24,15 @@ export  const HostsPage = () => {
 
 
   return (
-    <div className="container py-12">
-      <div className="mb-8 flex items-center justify-between">
+    <div className="py-12 h-screen w-screen px-20">
+      <div className="mb-8 w-full flex items-center justify-between">
         <Link to="/">
           <Button variant="ghost" className="gap-2">
             <ArrowLeft className="h-4 w-4" />
-            Back to Home
+            Back
           </Button>
         </Link>
-        <h1 className="text-4xl font-extrabold text-gray-900">Host Dashboard</h1>
+        <h1 className="text-4xl font-extrabold text-gray-900 -ml-20">Host Dashboard</h1>
         <Button variant="outline" size="icon" className="hover:bg-gray-200">
           <RefreshCw className="h-5 w-5" />
         </Button>
