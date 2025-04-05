@@ -17,3 +17,11 @@ export const createNgrok = async (args, context) => {
     },
   })
 }
+
+export const getNgrok = async (args, context) => {
+  return Ngrok.findUnique({ where: { id: args.id } })
+}
+
+export const getAllNgrok = async(args,context)=>{
+  return Ngrok.findMany();
+}

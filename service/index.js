@@ -4,8 +4,9 @@ import { getDockerStats } from "./stats.js";
 import path from "node:path";
 import { spawn } from "node:child_process";
 import * as readline from "node:readline";
-
+import cors from 'cors'
 const app = express();
+app.use(cors())
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
