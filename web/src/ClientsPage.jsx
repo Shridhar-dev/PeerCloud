@@ -21,6 +21,8 @@ export const ClientsPage = () => {
 const [serverUrl, setServerUrl] = useState("");
 
   const { data } = Ngrok.getAll.useQuery()
+  const updateAction = Ngrok.update.useAction()
+  
 
   async function submitRequest(e) {
     e.preventDefault();
@@ -34,8 +36,8 @@ const [serverUrl, setServerUrl] = useState("");
     console.log(data)
     const details = async () =>{
       console.log("Client request submitted:", { repoLink, type, entrypoint });
-      
-      const info = await fetch(`${data[data.length-1].url}/start/${[data.length-1]}`, {
+      try{
+      const info = await fetch(`${data[data.length-1].url}/start/${[data.length-1]*1030}`, {
         method: "POST",
         // mode: "no-cors",
         headers: {
@@ -50,6 +52,14 @@ const [serverUrl, setServerUrl] = useState("");
       const info2 = await info.json()
       console.log(info2.url)
       setServerUrl(info2.url);
+      console.log(data[data.length-1].id)
+      await updateAction({
+        id: data[data.length - 1].id,
+      });
+    }
+    catch(err){
+      console.log(err)
+    }
 setShowModal(true);
       // const newdata = 
     }

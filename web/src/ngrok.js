@@ -27,7 +27,9 @@ export const getAllNgrok = async(args,context)=>{
   return Ngrok.findMany({where: {isAvailable: true}});
 }
 
-export const setNgrokAvailablity = async(args,context)=>{
+export const updateNgrok = async(args,context)=>{
+  console.log("hello")
   const { id } = args
-  return await Ngrok.update({ where: { id }, data: { isAvailable: false } })
+  const { Ngrok } = context.entities
+  return Ngrok.update({ where: { id }, data: { isAvailable: false } })
 }
