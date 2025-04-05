@@ -67,7 +67,11 @@ app.listen(port, async () => {
   console.log(`Docker Job API running on http://localhost:${port}`);
 
   try {
-    const url = await ngrok.connect(port);
+    const listener = await ngrok.forward({
+      addr: port,
+      authtoken: "2vIYyUPC6lrWLbIrJdbhpzNTaeF_3hZZN8o9nSwYyBFVdNJpQ"
+  });
+    console.log(`ngrok tunnel established at: ${listener.url()}`);
     console.log(`ngrok tunnel established at ${url}`);
   } catch (error) {
     console.error("Error starting ngrok tunnel:", error);

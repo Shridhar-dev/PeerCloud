@@ -50,7 +50,7 @@ export  const HostsPage = () => {
             disabled={isAllocating}
             className="w-full py-3 text-lg font-medium"
           >
-            {isAllocating ? "Allocating..." : "Allocate Container"}
+            <Link to="peer://run">{isAllocating ? "Allocating..." : "Allocate Container"}</Link>
           </Button>
         </div>
         <div className="mt-8 w-full max-w-lg">

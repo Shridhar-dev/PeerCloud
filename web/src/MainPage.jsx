@@ -33,14 +33,13 @@ export const MainPage = ({user}) =>  {
           <p className="text-gray-800 font-medium">{user.identities.username.id}</p>
         </div>
       </nav>
-
-        <section className="container mx-auto px-4 py-20 md:py-32 flex flex-col md:flex-row items-center">
-          <div className="md:w-1/2 mb-10 md:mb-0 pr-4">
-            <h1 className="text-4xl md:text-6xl font-bold mb-6">Decentralized GPU Computing for Everyone</h1>
-            <p className="text-xl text-gray-700 mb-8">
+        <div className=''>
+          <h1 className="text-4xl md:text-9xl text-center mt-20 w-4/5 mx-auto font-bold mb-6">Peer-to-peer cloud, powered by you.</h1>
+          <div className="md:w-1/2 mx-auto text-center mb-10 md:mb-0 pr-4">
+            <p className="text-xl text-gray-700 mb-8 mt-10">
           Share and access computing power globally at a fraction of the cost of traditional cloud services.
             </p>
-            <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+            <div className="flex flex-col w-full justify-center sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
           <Link
             to="/hosts"
             className="py-3 px-8 shadow-md text-white bg-black flex justify-center items-center gap-2 rounded-lg group relative overflow-hidden transition-all before:absolute before:h-0 before:w-0 before:rounded-full before:bg-white before:duration-300 before:ease-out hover:before:h-32 hover:before:w-72"
@@ -55,13 +54,16 @@ export const MainPage = ({user}) =>  {
           </Link>
             </div>
           </div>
-          <div className="md:w-1/2 flex justify-center items-center">
-            <div className="relative h-64 flex justify-center items-center md:h-96 w-full">
-          <img
-            src={images[currentImageIndex]}
-            alt="Rotating GPU"
-            className="absolute inset-0 bg-gradient-to-br from-gray-950 to-gray-600 rounded-xl flex items-center justify-center duration-500 ease-in-out opacity-100 transition-all"
-          />
+        </div>
+        <section className=" mx-auto md:py-12 flex flex-col md:flex-row items-center justify-center">
+      
+          <div className="md:w-4/5 flex justify-center items-center">
+            <div className="relative flex justify-center items-center  w-full">
+              <img
+                src={images[currentImageIndex]}
+                alt="Rotating GPU"
+                className="w-full inset-0 bg-gradient-to-br from-gray-950 to-gray-600 rounded-xl flex items-center justify-center duration-500 ease-in-out opacity-100 transition-all"
+              />
             </div>
           </div>
         </section>
