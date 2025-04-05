@@ -2,13 +2,15 @@ import { execSync, spawn } from 'node:child_process';
 import { appendFileSync, writeFileSync } from 'node:fs';
 import { python, nodejs } from './templates/templates.js';
 import path from 'node:path';
+import os from 'node:os';
 import fs from 'node:fs';
 
 export async function runDockerJob(jobId, repository, type, entrypoint) {
   const repoName = repository.split('/').pop().replace('.git', '');
-  const clonePath = `./repos/${repoName}`;
+  const clonePath = path.join(os.tmpdir(), 'repos', `${repoName}-${jobId}`);
+  //const clonePath = `/repos/${repoName}-${jobId}`;
   const containerName = `container-${jobId}`;
-  const networkName = 'peercloud-net';
+  const networkName = `peercloud-net-${jobId}`;
 
   if (!fs.existsSync(clonePath)) {
     execSync(`git clone ${repository} ${clonePath}`, { stdio: 'inherit' });
@@ -26,11 +28,12 @@ export async function runDockerJob(jobId, repository, type, entrypoint) {
     
     fs.writeFileSync(path.join(clonePath, 'Dockerfile'), dockerfileContent);
     
-    try {
-      execSync(`docker network inspect ${networkName}`, { stdio: 'ignore' });
-    } catch {
-      execSync(`docker network create ${networkName}`, { stdio: 'inherit' });
-    }
+  }
+
+  try {
+    execSync(`docker network inspect ${networkName}`, { stdio: 'ignore' });
+  } catch {
+    execSync(`docker network create ${networkName}`, { stdio: 'inherit' });
   }
 
   const dockerBuildCmd = `docker build -t ${containerName} ${clonePath}`;
@@ -44,10 +47,10 @@ export async function runDockerJob(jobId, repository, type, entrypoint) {
   ]);
 
   const ngrok = spawn("docker", [
-    "run", "--rm",
+    "run", 
     "--network", networkName,
-    "-p", "4040:4040",
-    "-e", `NGROK_AUTHTOKEN=${process.env.NGROK_AUTH_TOKEN}`,
+    "-p", `${jobId}:4040`,
+    "-e", `NGROK_AUTHTOKEN=2mzQ2xid9r3q9cvyrkUjx8B8XEu_6f5LpGx789AytMgSPQnkc`,
     "ngrok/ngrok:latest",
     "http", `${containerName}:3000`
   ]);
@@ -56,7 +59,7 @@ export async function runDockerJob(jobId, repository, type, entrypoint) {
     let retries = 10;
     while (retries > 0) {
       try {
-        const res = await fetch("http://localhost:4040/api/tunnels");
+        const res = await fetch(`http://localhost:${jobId}/api/tunnels`);
         const json = await res.json();
         const url = json.tunnels?.find(t => t.proto === "https")?.public_url;
         if (url) return url;
@@ -67,8 +70,9 @@ export async function runDockerJob(jobId, repository, type, entrypoint) {
     throw new Error("Ngrok tunnel not found after multiple retries.");
   };
 
+  let publicUrl = null;
   try {
-    const publicUrl = await getNgrokUrl();
+    publicUrl = await getNgrokUrl();
     console.log("🌐 Ngrok Public URL:", publicUrl);
   } catch (err) {
     console.error("❌ Failed to get Ngrok URL:", err.message);
@@ -113,6 +117,7 @@ export async function runDockerJob(jobId, repository, type, entrypoint) {
   });
 
   return {
+    url: publicUrl,
     stop: () => {
       try {
         console.log(`Stopping container: ${containerName}`);

@@ -1,7 +1,7 @@
 import { exec } from 'node:child_process';
 
 
-function getDockerStats() {
+export function getDockerStats() {
     return new Promise((resolve, reject) => {
       exec('docker stats --no-stream --format "{{.Name}}: {{.CPUPerc}} / {{.MemUsage}} / {{.MemPerc}}"', (error, stdout, stderr) => {
         if (error) {
@@ -21,14 +21,3 @@ function getDockerStats() {
       });
     });
   }
-  
-  async function main() {
-    try {
-      const dockerStats = await getDockerStats();
-      console.log(dockerStats);
-    } catch (error) {
-      console.error(error);
-    }
-  }
-  
-  main();
