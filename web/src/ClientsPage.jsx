@@ -6,11 +6,14 @@ import { Input } from "./components/ui/input"
 import { Label } from "./components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./components/ui/select"
 import { Link } from "react-router-dom"
+import { Ngrok } from "wasp/client/crud"
 // import { redirect } from "@/.wasp/out/sdk/wasp/dist/server/utils"
 
 
 
 export const ClientsPage = () => {
+  const { data } = Ngrok.getAll.useQuery()
+
   async function submitRequest(e) {
     e.preventDefault();
     const formData = new FormData(e.target);
@@ -20,8 +23,25 @@ export const ClientsPage = () => {
     const entrypoint = formData.get("entrypoint");
   
     // In a real application, you would save this to MongoDB
-    console.log("Client request submitted:", { repoLink, type, entrypoint });
-    
+    console.log(data)
+    const details = async () =>{
+      console.log("Client request submitted:", { repoLink, type, entrypoint });
+      
+      const info = await fetch(`${data[data.length-1].url}/start/${[data.length-1]}`, {
+        method: "POST",
+        // mode: "no-cors",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          repository: "https://github.com/Rushikesh-24/node-server",
+          type,
+          entrypoint
+        })
+      })
+      console.log(info)
+    }
+    details();
   }
   return (
     <div className="w-full h-screen flex justify-center items-center">
@@ -56,6 +76,7 @@ export const ClientsPage = () => {
                   <SelectValue placeholder="Select container type" />
                 </SelectTrigger>
                 <SelectContent>
+                  <SelectItem value="python">AI</SelectItem>
                   <SelectItem value="web">Web Application</SelectItem>
                   <SelectItem value="api">API Service</SelectItem>
                   <SelectItem value="worker">Background Worker</SelectItem>
