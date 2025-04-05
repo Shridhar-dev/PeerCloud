@@ -2,8 +2,9 @@ import express from "express";
 import { runDockerJob } from "./dockerrunner.js";
 import { getDockerStats } from "./stats.js";
 import ngrok from "ngrok";
-
+import cors from 'cors'
 const app = express();
+app.use(cors())
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 const port = 9123;
