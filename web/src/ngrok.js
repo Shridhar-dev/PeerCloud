@@ -9,6 +9,11 @@ export const createNgrok = async (args, context) => {
   return await Ngrok.create({
     data: {
       url,
+      user: {
+        connect: {
+          id: context.user.id,
+        },
+      },
     },
   })
 }

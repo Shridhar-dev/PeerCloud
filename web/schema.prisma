@@ -12,6 +12,7 @@ generator client {
 model User {
   id          Int @id @default(autoincrement())
   containers  Container[] 
+  ngrok      Ngrok[]
 }
 model Container {
   id          Int @id @default(autoincrement())
@@ -27,4 +28,6 @@ model Container {
 model Ngrok{
   id          Int @id @default(autoincrement())
   url         String
+  userId      Int
+  user        User    @relation(fields: [userId], references: [id])
 }
