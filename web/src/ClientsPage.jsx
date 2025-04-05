@@ -19,6 +19,7 @@ import { toast } from "sonner"
 export const ClientsPage = () => {
   const [showModal, setShowModal] = useState(false);
 const [serverUrl, setServerUrl] = useState("");
+const [geminiData, setGeminiData] = useState(null);
 
   const { data } = Ngrok.getAll.useQuery()
   const updateAction = Ngrok.update.useAction()
@@ -60,14 +61,29 @@ const [serverUrl, setServerUrl] = useState("");
     catch(err){
       console.log(err)
     }
-setShowModal(true);
+    const geminiRequestBody = {
+      contents: [
+        {
+          parts: [
+            {
+              text: `Generate a structured output response with only container instructions for:\nRepository: ${repoLink}\nType: ${type}\nEntrypoint: ${entrypoint} just return a text with less thatn 20-25 words`
+            }
+          ]
+        }
+      ]
+    };
+
+    const geminiResponse = await fetchGeminiData(geminiRequestBody);
+    setGeminiData(geminiResponse);
+    console.log("Gemini Response:", geminiResponse);
+    setShowModal(true);
       // const newdata = 
     }
     details();
   }
   const fetchGeminiData = async (requestBody) => {
     try {
-      const geminiApiKey = process.env.NEXT_PUBLIC_GEMINI_API || "";
+      const geminiApiKey =  "AIzaSyBxfm-pwcV_9bh5FO5FVvbQAHpur4IDeoQ";
       const response = await fetch(
         `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${geminiApiKey}`,
         {
@@ -104,7 +120,13 @@ setShowModal(true);
             Back to Home
           </Button>
         </Link>
-      </div>
+        </div>
+        {geminiData && (
+          <div className="text-sm space-y-2">
+            <p><strong>Gemini Suggestions:</strong></p>
+            <pre className="bg-muted p-2 rounded-md overflow-auto whitespace-pre-wrap">{JSON.stringify(geminiData, null, 2)}</pre>
+          </div>
+        )}
 
       <Card>
         <CardHeader>
