@@ -36,10 +36,30 @@ page DashboardPage {
   component: import { DashboardPage } from "@src/DashboardPage",
   authRequired: true
 }
+route JobRoute { path: "/jobs", to: JobPage }
+page JobPage {
+  component: import { JobPage } from "@src/JobPage",
+  authRequired: true
+}
+route HostRoute { path: "/host", to: HostPage }
+page HostPage {
+  component: import { HostPage } from "@src/HostPage",
+  authRequired: true
+}
+route CreditRoute { path: "/credit", to: CreditPage }
+page CreditPage {
+  component: import { CreditPage } from "@src/CreditPage",
+  authRequired: true
+}
+route SettingsRoute { path: "/settings", to: SettingsPage }
+page SettingsPage {
+  component: import { SettingsPage } from "@src/SettingsPage",
+  authRequired: true
+}
 
 route HostsRoute { path: "/hosts", to: HostsPage }
 page HostsPage {
-  component: import { HostsPage } from "@src/HostPage",
+  component: import { HostsPage } from "@src/HostsPage",
   authRequired: true
 }
 
@@ -58,7 +78,7 @@ crud Ngrok{
       overrideFn: import { createNgrok } from "@src/ngrok.js",
     },
     update: {
-      // overrideFn: import { updateNgrok } from "@src/ngrok.js",
+       overrideFn: import { updateNgrok } from "@src/ngrok.js",
     },
   },
 }
