@@ -69,6 +69,44 @@ app.get("/usage", async (req, res) => {
   }
 });
 
+app.post("/start/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { repository, type, entrypoint } = req.body;
+
+    if (jobs[id]) {
+      return res.status(400).json({ message: `Job with ID ${id} is already running.` });
+    }
+
+    const jobRunner = await runDockerJob(id, repository, type, entrypoint);
+    jobs[id] = jobRunner;
+    console.log("Job started:", jobRunner);
+
+    res.json({ message: `Started job with ID ${id}, url: ${publicUrl}` });
+  } catch (error) {
+    console.error("Error starting job:", error);
+    res.status(500).json({ message: "Error starting job", error: error.message });
+  }
+});
+
+// Route: Stop an existing Docker Job
+app.post("/stop/:id", async (req, res) => {
+  const { id } = req.params;
+
+  if (!jobs[id]) {
+    return res.status(404).json({ message: `No job found with ID ${id}.` });
+  }
+
+  try {
+    await jobs[id].stop();
+    delete jobs[id];
+    res.json({ message: `Stopped job with ID ${id}` });
+  } catch (error) {
+    console.error("Error stopping job:", error);
+    res.status(500).json({ message: "Error stopping job", error: error.message });
+  }
+});
+
 // ✅ Start everything
 startNgrok().then(({ url }) => {
   publicUrl = url;

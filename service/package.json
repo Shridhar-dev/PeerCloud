@@ -10,10 +10,13 @@
   "author": "",
   "license": "ISC",
   "bin": "bundle.js",
+  
   "pkg": {
-  "assets": [
-    "node_modules/ngrok/bin/ngrok.exe"
-  ]},
+    "assets": [
+      "node_modules/ngrok/bin/ngrok.exe",
+      "node_modules/cors/**/*"
+    ]
+  },
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^5.1.0",
