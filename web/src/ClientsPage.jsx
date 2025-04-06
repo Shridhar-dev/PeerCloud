@@ -12,6 +12,7 @@ import { useState } from "react"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "./components/ui/dialog"
 import { Copy } from "lucide-react"
 import { toast } from "sonner"
+import Wrapper from "./components/Wrapper"
 
 
 
@@ -110,9 +111,12 @@ const [geminiData, setGeminiData] = useState(null);
   };
 
   return (
-    <div className="w-full h-screen flex justify-center items-center">
+      
+    <Wrapper>
+    <div className="w-full h-screen flex justify-center items-center px-10">
 
-    <div className="container max-w-4xl py-12 ">
+    <div className="flex-1 ">
+    
       <div className="mb-8">
         <Link to="/">
           <Button variant="ghost" className="gap-2">
@@ -213,6 +217,7 @@ const [geminiData, setGeminiData] = useState(null);
       )
     }
     </div>
+    </Wrapper>
   )
 }
 
