@@ -5,6 +5,7 @@ import { Link } from "react-router-dom"
 import { ArrowLeft, RefreshCw } from "lucide-react"
 import { Button } from "./components/ui/button"
 import { Ngrok } from "wasp/client/crud"
+import Wrapper from "./components/Wrapper"
 
 
 export  const HostsPage = () => {
@@ -24,6 +25,9 @@ export  const HostsPage = () => {
 
 
   return (
+    <Wrapper>
+
+    
     <div className="py-12 h-screen w-screen px-20">
       <div className="mb-8 w-full flex items-center justify-between">
         <Link to="/">
@@ -80,6 +84,7 @@ export  const HostsPage = () => {
         </div>
       </div>
     </div>
+    </Wrapper>
   )
 }
 

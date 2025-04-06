@@ -5,6 +5,7 @@ import { Overview } from "./components/dashboard/overview"
 import { RecentActivity } from "./components/dashboard/recent-activity"
 import { ResourceStats } from "./components/dashboard/resource-stats"
 import { CreditBalance } from "./components/dashboard/credit-balance"
+import Wrapper from './components/Wrapper'
 
 export const DashboardPage = ({user}) => {
   useEffect(() => {
@@ -12,6 +13,8 @@ export const DashboardPage = ({user}) => {
   }, []);
   return (
     // <div>{user.identities.username.id}</div>
+    <Wrapper>
+
     <DashboardShell>
       <DashboardHeader heading="Dashboard" text="Monitor your compute sharing activity and credit balance." />
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
@@ -25,5 +28,6 @@ export const DashboardPage = ({user}) => {
         <RecentActivity className="col-span-3" />
       </div>
     </DashboardShell>
+    </Wrapper>
   )
 }

@@ -4,8 +4,12 @@ import { DashboardShell } from "./components/dashboard/dashboard-shell"
 import { NgrokSettings } from "./components/settings/ngrok-settings"
 import { ProfileSettings } from "./components/settings/profile-settings"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./components/ui/tab"
+import Wrapper from './components/Wrapper'
 export const SettingsPage = () => {
   return (
+    <Wrapper>
+
+    
     <DashboardShell>
       <DashboardHeader heading="Settings" text="Manage your account settings and configure your Ngrok URLs." />
 
@@ -22,5 +26,6 @@ export const SettingsPage = () => {
         </TabsContent>
       </Tabs>
     </DashboardShell>
+    </Wrapper>
   )
 }

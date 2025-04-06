@@ -3,9 +3,11 @@ import { DashboardHeader } from "./components/dashboard/dashboard-header"
 import { DashboardShell } from "./components/dashboard/dashboard-shell"
 import { HostResourceForm } from "./components/host/host-resource-form"
 import { ActiveHostedResources } from "./components/host/active-hosted-resources"
+import Wrapper from './components/Wrapper'
 
 export const HostPage = () => {
   return (
+    <Wrapper>
     <DashboardShell>
       <DashboardHeader
         heading="Host Resources"
@@ -16,5 +18,6 @@ export const HostPage = () => {
         <ActiveHostedResources />
       </div>
     </DashboardShell>
+    </Wrapper>
   )
 }
