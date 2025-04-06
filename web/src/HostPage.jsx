@@ -13,7 +13,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./com
 import { Ngrok } from "wasp/client/crud"
 import Wrapper from "./components/Wrapper"
 
-export const HostsPage = () => {
+export const HostPage = () => {
   const [isAllocating, setIsAllocating] = useState(false)
   const [containerConfig, setContainerConfig] = useState({
     memory: 512,

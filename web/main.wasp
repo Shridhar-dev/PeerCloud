@@ -59,7 +59,7 @@ page SettingsPage {
 
 route HostsRoute { path: "/hosts", to: HostsPage }
 page HostsPage {
-  component: import { HostsPage } from "@src/HostsPage",
+  component: import { HostPage } from "@src/HostPage",
   authRequired: true
 }
 

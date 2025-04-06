@@ -88,11 +88,11 @@ export function AppSidebar() {
           <div className="flex items-center gap-2">
             <Avatar className="h-8 w-8">
               <AvatarImage src="/placeholder.svg?height=32&width=32" alt="User" />
-              <AvatarFallback>R</AvatarFallback>
+              <AvatarFallback>S</AvatarFallback>
             </Avatar>
             <div className="flex flex-col">
-              <span className="text-sm font-medium">rushi</span>
-              <span className="text-xs text-muted-foreground">rushi24@gmail.com</span>
+              <span className="text-sm font-medium">Shridhar</span>
+              <span className="text-xs text-muted-foreground">shridharkamat10@gmail.com</span>
             </div>
           </div>
           <div className="flex items-center gap-2">
