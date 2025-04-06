@@ -300,4 +300,3 @@ export const HostsPage = () => {
     </div>
   )
 }
-
