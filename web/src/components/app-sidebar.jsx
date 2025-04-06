@@ -62,7 +62,7 @@ export function AppSidebar() {
           <div className="flex h-8 w-8 items-center justify-center rounded-md bg-primary">
             <Cpu className="h-4 w-4 text-primary-foreground" />
           </div>
-          <span className="text-lg font-semibold">PeerCloud</span>
+          <Link to={'/'} className="text-lg font-semibold">PeerCloud</Link>
         </div>
         <div className="mt-2 w-full">
           <SidebarTrigger className="ml-auto" />
@@ -88,11 +88,11 @@ export function AppSidebar() {
           <div className="flex items-center gap-2">
             <Avatar className="h-8 w-8">
               <AvatarImage src="/placeholder.svg?height=32&width=32" alt="User" />
-              <AvatarFallback>S</AvatarFallback>
+              <AvatarFallback>R</AvatarFallback>
             </Avatar>
             <div className="flex flex-col">
-              <span className="text-sm font-medium">Shridhar</span>
-              <span className="text-xs text-muted-foreground">shridharkamat10@gmail.com</span>
+              <span className="text-sm font-medium">Rushi</span>
+              <span className="text-xs text-muted-foreground">Rushi@gmail.com</span>
             </div>
           </div>
           <div className="flex items-center gap-2">
