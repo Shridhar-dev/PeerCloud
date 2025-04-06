@@ -38,7 +38,7 @@ const [geminiData, setGeminiData] = useState(null);
     const details = async () =>{
       console.log("Client request submitted:", { repoLink, type, entrypoint });
       try{
-      const info = await fetch(`${data[data.length-1].url}/start/${[data.length-1]*1030}`, {
+      const info = await fetch(`${data[data.length-1].url}/start/${[data.length-1]*1090}`, {
         method: "POST",
         // mode: "no-cors",
         headers: {
@@ -66,7 +66,7 @@ const [geminiData, setGeminiData] = useState(null);
         {
           parts: [
             {
-              text: `Generate a structured output response with only container instructions for:\nRepository: ${repoLink}\nType: ${type}\nEntrypoint: ${entrypoint} just return a text with less thatn 20-25 words`
+              text: `Generate an output response with only container instructions for:\nRepository: ${repoLink}\nType: ${type}\nEntrypoint: ${entrypoint} just return text in paragraph form with less than 20-25 words`
             }
           ]
         }
@@ -102,7 +102,7 @@ const [geminiData, setGeminiData] = useState(null);
         .replace(/^```json\s*/, "")
         .replace(/```\s*$/, "");
 
-      return JSON.parse(responseText);
+      return responseText;
     } catch (error) {
       console.error("Error fetching data:", error);
       return null;
@@ -121,12 +121,6 @@ const [geminiData, setGeminiData] = useState(null);
           </Button>
         </Link>
         </div>
-        {geminiData && (
-          <div className="text-sm space-y-2">
-            <p><strong>Gemini Suggestions:</strong></p>
-            <pre className="bg-muted p-2 rounded-md overflow-auto whitespace-pre-wrap">{JSON.stringify(geminiData, null, 2)}</pre>
-          </div>
-        )}
 
       <Card>
         <CardHeader>
@@ -210,6 +204,14 @@ const [geminiData, setGeminiData] = useState(null);
     </div>
   </DialogContent>
 </Dialog>
+    {
+      geminiData && (
+        <div className="fixed bottom-20 right-20 bg-white w-fit text-sm space-y-2 border rounded-md p-4 shadow-lg">
+          <p><strong>Gemini Suggestions:</strong></p>
+          <pre className="bg-muted p-2 rounded-md overflow-auto whitespace-pre-wrap">{geminiData}</pre>
+        </div>
+      )
+    }
     </div>
   )
 }

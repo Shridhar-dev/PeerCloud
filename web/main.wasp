@@ -58,7 +58,7 @@ crud Ngrok{
       overrideFn: import { createNgrok } from "@src/ngrok.js",
     },
     update: {
-      // overrideFn: import { updateNgrok } from "@src/ngrok.js",
+      overrideFn: import { updateNgrok } from "@src/ngrok.js",
     },
   },
 }
