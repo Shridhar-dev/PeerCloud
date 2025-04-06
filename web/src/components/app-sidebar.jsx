@@ -1,6 +1,6 @@
 "use client"
 import { Home, Server, Cpu, ListChecks, Wallet, Settings, LogOut } from "lucide-react"
-
+import { getUsername } from 'wasp/auth'
 import {
   Sidebar,
   SidebarContent,
@@ -88,11 +88,11 @@ export function AppSidebar() {
           <div className="flex items-center gap-2">
             <Avatar className="h-8 w-8">
               <AvatarImage src="/placeholder.svg?height=32&width=32" alt="User" />
-              <AvatarFallback>U</AvatarFallback>
+              <AvatarFallback>R</AvatarFallback>
             </Avatar>
             <div className="flex flex-col">
-              <span className="text-sm font-medium">User Name</span>
-              <span className="text-xs text-muted-foreground">user@example.com</span>
+              <span className="text-sm font-medium">rushi</span>
+              <span className="text-xs text-muted-foreground">rushi24@gmail.com</span>
             </div>
           </div>
           <div className="flex items-center gap-2">
